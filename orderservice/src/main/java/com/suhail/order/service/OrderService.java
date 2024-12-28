@@ -21,6 +21,8 @@ public interface OrderService {
      * @return the order with the specified ID
      * @author Md Suhail Khan
      */
+
+    void getAllOrder2();
     Order getOrderById(Long orderId);
 
     /**

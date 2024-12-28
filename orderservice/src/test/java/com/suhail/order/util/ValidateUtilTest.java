@@ -1,8 +1,7 @@
-package util;
+package com.suhail.order.util;
 
 import com.suhail.order.exception.ValidationException;
 import com.suhail.order.model.Order;
-import com.suhail.order.util.ValidateUtil;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;

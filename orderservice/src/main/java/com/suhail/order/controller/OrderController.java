@@ -105,15 +105,17 @@ public class OrderController {
         }
     }
 
+
     /**
      * Retrieves all orders.
      *
      * @return ResponseEntity containing the list of all orders and HTTP status OK
      */
     @GetMapping("/getAll")
-    public ResponseEntity<List<Order>> getAllOrders() {
-        List<Order> orders = orderService.getAllOrder();
-        return new ResponseEntity<>(orders, HttpStatus.OK);
+    public ResponseEntity<String> getAllOrders(){
+
+        orderService.getAllOrder();
+        return new ResponseEntity<>("orders", HttpStatus.OK);
     }
 
     /**
@@ -129,5 +131,12 @@ public class OrderController {
         } catch (OrderNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/parallel")
+    public ResponseEntity<String> getAllOrders2(){
+
+        orderService.getAllOrder2();
+        return new ResponseEntity<>("orders", HttpStatus.OK);
     }
 }

@@ -4,6 +4,7 @@ import com.suhail.order.exception.OrderNotFoundException;
 import com.suhail.order.model.Order;
 import com.suhail.order.repository.OrderRepository;
 import io.github.resilience4j.retry.annotation.Retry;
+import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -55,6 +57,34 @@ public class OrderServiceImpl implements OrderService{
                 });
     }
 
+    public void getAllOrder2() {
+        CompletableFuture<Void> redisCall = CompletableFuture.runAsync(this::fetchFromRedis);
+        CompletableFuture<Void> dbCall = CompletableFuture.runAsync(this::fetchFromDB);
+
+        CompletableFuture.allOf(redisCall,dbCall).join();
+
+    }
+
+    private void fetchFromRedis() {
+        long redisStartTime = System.currentTimeMillis();
+
+        logger.info("getting data from redis at {}",redisStartTime);
+        try{
+            Thread.sleep(2000);
+        }catch (InterruptedException e)
+            {logger.error("Error occurred");}
+        logger.info("After Thread sleep for Redis {}",System.currentTimeMillis()-redisStartTime);
+
+    }
+
+    private void fetchFromDB() {
+        long dBStartTime = System.currentTimeMillis();
+
+        logger.info("getting data from DB at {}",dBStartTime);
+        try{Thread.sleep(4000);}catch (InterruptedException e){logger.error("Error inside db call");}
+        logger.info("After Thread sleep for DB {}",System.currentTimeMillis()-dBStartTime);
+
+    }
 
     /**
      * Saves a new order in the database.
